@@ -2424,8 +2424,13 @@ if test "x$openssl" = "xyes" ; then
 		[AC_LANG_PROGRAM([[
 	#include <string.h>
 	#include <openssl/opensslv.h>
+	#include <openssl/crypto.h>
 		]], [[
+		#if OPENSSL_VERSION_NUMBER < 0x10100000L
 		exit(SSLeay() == OPENSSL_VERSION_NUMBER ? 0 : 1);
+		#else
+		exit(OpenSSL_version_num() == OPENSSL_VERSION_NUMBER ? 0 : 1);
+		#endif
 		]])],
 		[
 			AC_MSG_RESULT([yes])
